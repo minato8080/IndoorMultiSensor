@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include <TimeLib.h>   // https://github.com/PaulStoffregen/Time
+#include <LiquidCrystal.h>
 
-#include <LCD.cpp>
+#include <Time.hpp>
 
 // 曜日の計算（ツェラー(Zeller)の公式)
 int getDayWeek(int year, int month, int day) {
@@ -39,19 +40,26 @@ time_t compileTime() {
     return t + FUDGE; // add fudge factor to allow for compile time
 }
 
+// 月、日、時、分、秒が0～9の場合、1桁目を 空白 もしくは 0 に置換
+void lcdzeroSup(LiquidCrystal lcd,int digit) {
+    if (digit < 10)
+        lcd.print(' '); // 現在「空白」
+    lcd.print(digit);
+}
+
 // // 秋月I2C液晶ディスプレイに表示
-void serialTime(tmElements_t tm) {
+void serialTime(LiquidCrystal lcd,tmElements_t tm) {
     //  年月日の表示
     lcd.setCursor(0, 0);
     lcd.print(tmYearToCalendar(tm.Year));
     lcd.setCursor(4, 0);
     lcd.print("/");
     lcd.setCursor(5, 0);
-    lcdzeroSup(tm.Month);
+    lcdzeroSup(lcd,tm.Month);
     lcd.setCursor(7, 0);
     lcd.print("/");
     lcd.setCursor(8, 0);
-    lcdzeroSup(tm.Day);
+    lcdzeroSup(lcd,tm.Day);
     // 曜日の表示 0=日曜  1=月曜  2=火曜  3=水曜  4=木曜  5=金曜  6=土曜
     int day_week;
     char DayWeekData[7][4] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
@@ -62,20 +70,13 @@ void serialTime(tmElements_t tm) {
     lcd.print(")");
     // 時分秒の表示
     lcd.setCursor(0, 1);
-    lcdzeroSup(tm.Hour);
+    lcdzeroSup(lcd,tm.Hour);
     lcd.setCursor(2, 1);
     lcd.print(":");
     lcd.setCursor(3, 1);
-    lcdzeroSup(tm.Minute);
+    lcdzeroSup(lcd,tm.Minute);
     lcd.setCursor(5, 1);
     lcd.print(":");
     lcd.setCursor(6, 1);
-    lcdzeroSup(tm.Second);
-}
-
-// 月、日、時、分、秒が0～9の場合、1桁目を 空白 もしくは 0 に置換
-void lcdzeroSup(int digit) {
-    if (digit < 10)
-        lcd.print(' '); // 現在「空白」
-    lcd.print(digit);
+    lcdzeroSup(lcd,tm.Second);
 }

@@ -4,11 +4,11 @@
 #include <I2CScanner.h>
 #include <Wire.h>      // Arduino IDE のI2Cライブラリ
 
-#include <Time.cpp>
-#include <lcd.cpp>
+#include <Time.hpp>
 
 // I2CScanner scanner;
 RX8900RTC RTC;
+LiquidCrystal lcd(1, 0, 12, 13, 14, 15);
 
 void setup() {
     // Wire.begin();
@@ -30,13 +30,18 @@ void setup() {
 
 void loop() {
 	// scanner.Scan();
-    tmElements_t read = RTC.read();
+    rx8900tmElements_t read = RTC.read(true);
+    Serial.print(read.err1);
+    Serial.print(read.err2);
+    Serial.println();
+    Serial.print(read.Month);
     Serial.print(read.Year);
     Serial.print(read.Month);
     Serial.print(read.Day);
     Serial.print(read.Hour);
     Serial.print(read.Minute);
-    Serial.println(read.Second);
+    Serial.print(read.Second);
+    Serial.println();
     // serialTime(RTC.read());
     delay(1000);
 }
