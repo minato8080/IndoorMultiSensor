@@ -1,17 +1,16 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 #include <RX8900RTC.h> // https://github.com/citriena/RX8900RTC
-#include <I2CScanner.h>
 #include <Wire.h>      // Arduino IDE のI2Cライブラリ
 
 #include <Time.hpp>
 
-// I2CScanner scanner;
 RX8900RTC RTC;
 LiquidCrystal lcd(1, 0, 12, 13, 14, 15);
+// LiquidCrystal lcd(1, 0, 8, 9, 10, 11, 12, 13, 14, 15);
 
 void setup() {
-    // Wire.begin();
+    Wire.begin(); // picoの場合setup内で再度beginする
     lcd.begin(16, 2); // ディスプレイの行数(16)と桁数(2)
     RTC.init();       // RTC初期化
     // RTC.get()よりcompileTime()が新しい時はcompiletimeをRTC.set
@@ -24,12 +23,9 @@ void setup() {
         // second, minute, hour, week, day, month, year RTC.write(tm);
     }
     Serial.begin(9600);
-	// while (!Serial) {};
-	// scanner.Init();
 }
 
 void loop() {
-	// scanner.Scan();
     rx8900tmElements_t read = RTC.read(true);
     Serial.print(read.err1);
     Serial.print(read.err2);
@@ -42,6 +38,6 @@ void loop() {
     Serial.print(read.Minute);
     Serial.print(read.Second);
     Serial.println();
-    // serialTime(RTC.read());
+    serialTime(lcd, RTC.read());
     delay(1000);
 }

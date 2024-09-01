@@ -41,14 +41,14 @@ time_t compileTime() {
 }
 
 // 月、日、時、分、秒が0～9の場合、1桁目を 空白 もしくは 0 に置換
-void lcdzeroSup(LiquidCrystal lcd,int digit) {
+void lcdzeroSup(LiquidCrystal lcd, int digit) {
     if (digit < 10)
-        lcd.print(' '); // 現在「空白」
+        lcd.print('0'); // 現在「空白」
     lcd.print(digit);
 }
 
 // // 秋月I2C液晶ディスプレイに表示
-void serialTime(LiquidCrystal lcd,tmElements_t tm) {
+void serialTime(LiquidCrystal lcd, tmElements_t tm) {
     //  年月日の表示
     lcd.setCursor(0, 0);
     lcd.print(tmYearToCalendar(tm.Year));
