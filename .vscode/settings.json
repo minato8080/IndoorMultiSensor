@@ -1,0 +1,8 @@
+{
+  //   "editor.formatOnSave": true,
+  "C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, BreakBeforeBraces: Attach, SpaceBeforeParens: ControlStatements, IndentWidth: 4 }",
+  "files.associations": {
+    "iostream": "cpp",
+    "ostream": "cpp"
+  }
+}
