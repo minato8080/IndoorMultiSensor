@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include <TimeLib.h>   // https://github.com/PaulStoffregen/Time
 #include <LiquidCrystal.h>
+#include <TimeLib.h> // https://github.com/PaulStoffregen/Time
 
 #include <Time.hpp>
 
@@ -17,9 +17,7 @@ int getDayWeek(int year, int month, int day) {
     return w;
 }
 
-// function to return the compile date and time as a time_t value
-// from alarm_ex1.ino in Arduino DS3232RTC Library sample sketch by Jack
-// Christensen.
+// コンパイルした時間を返す
 time_t compileTime() {
     const time_t FUDGE(
         10); // fudge factor to allow for upload time, etc. (seconds, YMMV)
@@ -55,11 +53,11 @@ void serialTime(LiquidCrystal lcd, tmElements_t tm) {
     lcd.setCursor(4, 0);
     lcd.print("/");
     lcd.setCursor(5, 0);
-    lcdzeroSup(lcd,tm.Month);
+    lcdzeroSup(lcd, tm.Month);
     lcd.setCursor(7, 0);
     lcd.print("/");
     lcd.setCursor(8, 0);
-    lcdzeroSup(lcd,tm.Day);
+    lcdzeroSup(lcd, tm.Day);
     // 曜日の表示 0=日曜  1=月曜  2=火曜  3=水曜  4=木曜  5=金曜  6=土曜
     int day_week;
     char DayWeekData[7][4] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
@@ -70,13 +68,13 @@ void serialTime(LiquidCrystal lcd, tmElements_t tm) {
     lcd.print(")");
     // 時分秒の表示
     lcd.setCursor(0, 1);
-    lcdzeroSup(lcd,tm.Hour);
+    lcdzeroSup(lcd, tm.Hour);
     lcd.setCursor(2, 1);
     lcd.print(":");
     lcd.setCursor(3, 1);
-    lcdzeroSup(lcd,tm.Minute);
+    lcdzeroSup(lcd, tm.Minute);
     lcd.setCursor(5, 1);
     lcd.print(":");
     lcd.setCursor(6, 1);
-    lcdzeroSup(lcd,tm.Second);
+    lcdzeroSup(lcd, tm.Second);
 }
