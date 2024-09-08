@@ -6,6 +6,11 @@
     "ostream": "cpp",
     "iosfwd": "cpp",
     "limits": "cpp",
-    "streambuf": "cpp"
+    "streambuf": "cpp",
+    "sstream": "cpp",
+    "iomanip": "cpp",
+    "*.tcc": "cpp",
+    "cstdio": "cpp",
+    "functional": "cpp"
   }
 }

@@ -3,10 +3,13 @@
 #include <RX8900RTC.h>
 #include <Wire.h>
 
-#include <Time.hpp>
+#include "../lib/mhz19c.hpp"
+#include "lcd.hpp"
+#include "time.hpp"
 
 RX8900RTC RTC;
 LiquidCrystal lcd(1, 0, 12, 13, 14, 15);
+MHZ19C mhz19c(uart0, 16, 17);
 
 void setup() {
     // picoの場合setup内で再度beginする必要がある
@@ -14,6 +17,7 @@ void setup() {
 
     // ディスプレイの行数(16)と桁数(2)
     lcd.begin(16, 2);
+    mhz19c.init();
 
     // RTC初期化
     RTC.init();
@@ -26,10 +30,23 @@ void setup() {
     }
 
     // テスト用
-    // Serial.begin(9600);
+    Serial.begin(9600);
 }
 
 void loop() {
-    serialTime(lcd, RTC.read());
+    // serialTime(lcd, RTC.read());
+
+    // read CO2
+    int co2;
+    mhz19c.measure(&co2);
+
+    // CO2をフォーマットしてLCDに出力
+    char result[50];
+    lcd.setCursor(0, 0);
+    lcd.print(padInt(co2, 4, ' ', result));
+
+    lcd.setCursor(4, 0);
+    lcd.print("ppm");
+
     delay(1000);
 }
