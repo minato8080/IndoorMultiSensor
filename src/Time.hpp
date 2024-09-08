@@ -2,6 +2,8 @@
 #include <LiquidCrystal.h>
 #include <TimeLib.h> // https://github.com/PaulStoffregen/Time
 
+#include "lcd.hpp"
+
 // 曜日の計算（ツェラー(Zeller)の公式)
 int getDayWeek(int year, int month, int day) {
     int w;
@@ -17,8 +19,8 @@ int getDayWeek(int year, int month, int day) {
 
 // コンパイルした時間を返す
 time_t compileTime() {
-    const time_t FUDGE(
-        10); // fudge factor to allow for upload time, etc. (seconds, YMMV)
+    // fudge factor to allow for upload time, etc. (seconds, YMMV)
+    const time_t FUDGE(10);
     const char *compDate = __DATE__, *compTime = __TIME__,
                *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
     char compMon[4], *m;
@@ -36,26 +38,21 @@ time_t compileTime() {
     return t + FUDGE; // add fudge factor to allow for compile time
 }
 
-// 月、日、時、分、秒が0～9の場合、1桁目を 空白 もしくは 0 に置換
-void lcdzeroSup(LiquidCrystal lcd, int digit) {
-    if (digit < 10)
-        lcd.print('0'); // 現在「空白」
-    lcd.print(digit);
-}
-
 // 秋月I2C液晶ディスプレイに表示
 void serialTime(LiquidCrystal lcd, tmElements_t tm) {
+    char buffer[50];
     //  年月日の表示
     lcd.setCursor(0, 0);
     lcd.print(tmYearToCalendar(tm.Year));
     lcd.setCursor(4, 0);
     lcd.print("/");
     lcd.setCursor(5, 0);
-    lcdzeroSup(lcd, tm.Month);
+    lcd.print(padInt(tm.Month, 2, '0', buffer));
     lcd.setCursor(7, 0);
     lcd.print("/");
     lcd.setCursor(8, 0);
-    lcdzeroSup(lcd, tm.Day);
+    lcd.print(padInt(tm.Day, 2, '0', buffer));
+
     // 曜日の表示 0=日曜  1=月曜  2=火曜  3=水曜  4=木曜  5=金曜  6=土曜
     int day_week;
     char DayWeekData[7][4] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
@@ -64,15 +61,16 @@ void serialTime(LiquidCrystal lcd, tmElements_t tm) {
     lcd.print("(");
     lcd.print(DayWeekData[day_week]);
     lcd.print(")");
+
     // 時分秒の表示
     lcd.setCursor(0, 1);
-    lcdzeroSup(lcd, tm.Hour);
+    lcd.print(padInt(tm.Hour, 2, '0', buffer));
     lcd.setCursor(2, 1);
     lcd.print(":");
     lcd.setCursor(3, 1);
-    lcdzeroSup(lcd, tm.Minute);
+    lcd.print(padInt(tm.Minute, 2, '0', buffer));
     lcd.setCursor(5, 1);
     lcd.print(":");
     lcd.setCursor(6, 1);
-    lcdzeroSup(lcd, tm.Second);
+    lcd.print(padInt(tm.Second, 2, '0', buffer));
 }

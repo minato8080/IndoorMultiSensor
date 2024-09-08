@@ -11,6 +11,8 @@ RX8900RTC RTC;
 LiquidCrystal lcd(1, 0, 12, 13, 14, 15);
 MHZ19C mhz19c(uart0, 16, 17);
 
+void serialCO2(LiquidCrystal lcd, MHZ19C mhz19c);
+
 void setup() {
     // picoの場合setup内で再度beginする必要がある
     Wire.begin();
@@ -34,19 +36,21 @@ void setup() {
 }
 
 void loop() {
-    // serialTime(lcd, RTC.read());
+    serialTime(lcd, RTC.read());
+    // serialCO2(lcd, mhz19c);
+    delay(1000);
+}
 
+void serialCO2(LiquidCrystal lcd, MHZ19C mhz19c) {
     // read CO2
     int co2;
     mhz19c.measure(&co2);
 
     // CO2をフォーマットしてLCDに出力
-    char result[50];
+    char buffer[50];
     lcd.setCursor(0, 0);
-    lcd.print(padInt(co2, 4, ' ', result));
+    lcd.print(padInt(co2, 4, ' ', buffer));
 
     lcd.setCursor(4, 0);
     lcd.print("ppm");
-
-    delay(1000);
 }
