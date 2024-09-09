@@ -6,7 +6,7 @@
 #include "hardware/spi.h"
 #include <Wire.h>
 
-#define I2C_ADDRESS           0x76
+#define BME280_I2C_ADDRESS           0x76
 
 class BME280 {
 
@@ -36,28 +36,9 @@ public:
         Wire1.begin();
     }
 
-    // void write_reg(uint8_t addr, uint8_t data) {
-    //     uint8_t buff[2];
-    //     buff[0] = addr & 0x7f;
-    //     buff[1] = data;
-    //     cs_select();
-    //     spi_write_blocking(spi, buff, 2);
-    //     cs_deselect();
-    //     sleep_ms(10);
-    // }
-
-    // void read_reg(uint8_t addr, uint8_t *buff, uint16_t len) {
-    //     addr |= 0x80;
-    //     cs_select();
-    //     spi_write_blocking(spi, &addr, 1);
-    //     sleep_ms(10);
-    //     spi_read_blocking(spi, 0, buff, len);
-    //     cs_deselect();
-    //     sleep_ms(10);
-    // }
     // I2C書き込み関数
     void write_reg(uint8_t addr, uint8_t data) {
-        Wire1.beginTransmission(I2C_ADDRESS); // I2C通信の開始
+        Wire1.beginTransmission(BME280_I2C_ADDRESS); // I2C通信の開始
         Wire1.write(addr); // レジスタアドレスを書き込み
         Wire1.write(data); // データを書き込み
         Wire1.endTransmission(); // I2C通信の終了
@@ -66,11 +47,11 @@ public:
 
     // I2C読み込み関数
     void read_reg(uint8_t addr, uint8_t *buff, uint16_t len) {
-        Wire1.beginTransmission(I2C_ADDRESS); // I2C通信の開始
+        Wire1.beginTransmission(BME280_I2C_ADDRESS); // I2C通信の開始
         Wire1.write(addr); // レジスタアドレスを書き込み
         Wire1.endTransmission(false); // I2C通信を終了せず、再度通信を開始
 
-        Wire1.requestFrom(I2C_ADDRESS, len); // データの要求
+        Wire1.requestFrom(BME280_I2C_ADDRESS, len); // データの要求
         for (uint16_t i = 0; i < len; i++) {
             if (Wire1.available()) {
                 buff[i] = Wire1.read(); // データをバッファに読み込み

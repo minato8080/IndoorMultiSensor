@@ -5,12 +5,17 @@
 
 #include "../lib/bme280.hpp"
 #include "../lib/mhz19c.hpp"
-#include "lcd.hpp"
-#include "time.hpp"
+#include "char_utils.hpp"
+#include "time_utils.hpp"
 
+// RTCモジュール
 RX8900RTC RTC;
-LiquidCrystal lcd(1, 0, 6, 7, 8, 9);
+// LCDディスプレイ
+LiquidCrystal lcd0(1, 0, 6, 7, 8, 9);
+LiquidCrystal lcd1(16, 17, 18, 19, 20, 21);
+// CO2センサ
 MHZ19C mhz19c(uart0, 12, 13);
+// 温湿度気圧センサ
 BME280 bme280;
 
 // 温度は湿度・気圧の補正用であり気温よりやや高いため適当に補正する
@@ -26,10 +31,11 @@ void setup() {
     Wire1.begin();
 
     // LCDディスプレイ初期化
-    lcd.begin(16, 2);
-    // CO2測定モジュール初期化
+    lcd0.begin(16, 2);
+    lcd1.begin(16, 2);
+    // CO2センサ初期化
     mhz19c.init();
-    // 温湿度気圧測定モジュール初期化
+    // 温湿度気圧センサ初期化
     bme280.init();
     // RTCモジュール初期化
     RTC.init();
@@ -45,9 +51,9 @@ void setup() {
 }
 
 void loop() {
-    // serialTime(lcd, RTC.read());
-    serialCO2(lcd, mhz19c);
-    serialEnvironment(lcd, bme280);
+    serialTime(lcd1, RTC.read());
+    serialCO2(lcd0, mhz19c);
+    serialEnvironment(lcd0, bme280);
     delay(1000);
 }
 

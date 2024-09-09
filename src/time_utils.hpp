@@ -1,8 +1,11 @@
+#ifndef TIME_UTILS_HPP
+#define TIME_UTILS_HPP
+
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 #include <TimeLib.h> // https://github.com/PaulStoffregen/Time
 
-#include "lcd.hpp"
+#include "char_utils.hpp"
 
 // 曜日の計算（ツェラー(Zeller)の公式)
 int getDayWeek(int year, int month, int day) {
@@ -74,3 +77,5 @@ void serialTime(LiquidCrystal lcd, tmElements_t tm) {
     lcd.setCursor(6, 1);
     lcd.print(padInt(tm.Second, 2, '0', buffer));
 }
+
+#endif

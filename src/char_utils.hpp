@@ -1,5 +1,5 @@
-#ifndef LCD_HPP
-#define LCD_HPP
+#ifndef CHAR_UTILS_HPP
+#define CHAR_UTILS_HPP
 
 #include <stdio.h>
 
@@ -12,7 +12,7 @@
  */
 char *padInt(int number, int width, char padChar, char *output) {
     // バッファ
-    char format[20];
+    char format[10];
     if (padChar == ' ') {
         // 空白文字の場合、長さのみ指定
         sprintf(format, "%%%dd", width);
@@ -36,7 +36,7 @@ char *padInt(int number, int width, char padChar, char *output) {
 char *padFloat(float number, int width, int precision, char padChar,
                char *output) {
     // バッファ
-    char format[30]; // フォーマット文字列の最大長さを考慮
+    char format[10];
     if (padChar == ' ') {
         // 空白文字の場合、長さと精度のみ指定
         sprintf(format, "%%%d.%df", width, precision);
