@@ -57,7 +57,7 @@ void loop() {
     delay(1000);
 }
 
-/** CO2を測定し、LCDに出力
+/** CO2を測定し、秋月I2C液晶ディスプレイに表示
  * \param[in] lcd LiquidCrystalインスタンス
  * \param[in] mhz19c MHZ19Cインスタンス
  */
@@ -76,7 +76,7 @@ void serialCO2(LiquidCrystal lcd, MHZ19C mhz19c) {
     lcd.print("ppm");
 }
 
-/** 温湿度気圧を測定し、LCDに出力
+/** 温湿度気圧を測定し、秋月I2C液晶ディスプレイに表示
  * \param[in] lcd LiquidCrystalインスタンス
  * \param[in] bme280 BME280インスタンス
  */

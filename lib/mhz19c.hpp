@@ -5,6 +5,10 @@
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
 
+/** Shapoco氏のMHZ19Cモジュールライブラリ
+ * 
+ * \link https://github.com/shapoco/pico-env-mons
+ */
 class MHZ19C {
 public:
     uart_inst_t * const uart;

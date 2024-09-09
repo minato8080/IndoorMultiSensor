@@ -8,6 +8,11 @@
 
 #define BME280_I2C_ADDRESS           0x76
 
+/** Shapoco氏のBME280モジュールライブラリ
+ * 
+ * I2C通信用に改修しています
+ * \link https://github.com/shapoco/pico-env-mons
+ */
 class BME280 {
 
 public:
