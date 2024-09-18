@@ -5,7 +5,7 @@
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
 
-/** Shapoco氏のMHZ19Cモジュールライブラリ
+/** Shapoco氏のMHZ19Cモジュール用のクラス
  * 
  * \link https://github.com/shapoco/pico-env-mons
  */
